@@ -1,0 +1,5 @@
+# pg_stat_tcpinfo.control
+comment = 'Provides pg_stat_tcpinfo to show detailed TCP connection info for sockets owned by the server''s OS user on Linux.'
+default_version = '1.0'
+module_pathname = '$libdir/pg_stat_tcpinfo'
+relocatable = true
