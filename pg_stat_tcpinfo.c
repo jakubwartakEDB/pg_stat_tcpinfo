@@ -457,7 +457,7 @@ scan_proc_fds(HTAB *pid_map)
 			 */
 			while ((fd_entry = ReadDirExtended(fd_dir, fd_path, DEBUG4)) != NULL)
 			{
-				if (strcmp(fd_entry->d_name, ".") || strcmp(fd_entry->d_name, ".."))
+				if (!strcmp(fd_entry->d_name, ".") || !strcmp(fd_entry->d_name, ".."))
 					continue;
 
 				snprintf(link_path, sizeof(link_path), "%s/%s", fd_path, fd_entry->d_name);
