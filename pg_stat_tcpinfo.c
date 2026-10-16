@@ -1093,7 +1093,9 @@ pg_stat_get_tcpinfo(PG_FUNCTION_ARGS)
 					appendStringInfoString(&json_buf, ", ");
 
 				/* Check TCP_CONGESTION in tcp(7) */
-				appendStringInfo(&json_buf, "\"congestion\": \"%s\"", diag_info->cong);
+				appendStringInfoString(&json_buf, "\"congestion\": ");
+				/* It's from kernel, but this silences security tools: */
+				escape_json(&json_buf, diag_info->cong);
 
 				has_data = true;
 			}
