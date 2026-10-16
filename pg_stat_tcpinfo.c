@@ -643,6 +643,12 @@ recv_diag_msgs(int nl_sock, HTAB *nldiag_map, uid_t my_uid)
 
 			close(nl_sock);
 			errno = save_errno;
+			/* Retry on signals, but abort on query cancel */
+			if (errno == EINTR)
+			{
+				CHECK_FOR_INTERRUPTS();
+				continue;
+			}
 			ereport(ERROR,
 					(errcode(ERRCODE_IO_ERROR),
 					 errmsg("could not receive netlink message: %m")));
