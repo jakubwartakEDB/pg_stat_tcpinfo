@@ -790,7 +790,7 @@ pg_stat_get_tcpinfo(PG_FUNCTION_ARGS)
 		PG_RETURN_VOID();
 
 	/* Open netlink */
-	if ((nl_sock = socket(AF_NETLINK, SOCK_DGRAM, NETLINK_INET_DIAG)) == -1)
+	if ((nl_sock = socket(AF_NETLINK, SOCK_DGRAM | SOCK_CLOEXEC, NETLINK_INET_DIAG)) == -1)
 	{
 		ereport(ERROR, (errcode(ERRCODE_IO_ERROR),
 						errmsg("could not create netlink socket: %m")));
