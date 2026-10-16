@@ -322,7 +322,7 @@ parse_diag_msg(HTAB *nldiag_map, struct inet_diag_msg *diag_msg, int rtalen,
 
 	timer_idx = diag_msg->idiag_timer;
 	if (timer_idx == 0)
-		tcp_timer_str[0] = '\0';
+		memset(tcp_timer_str, 0, sizeof(tcp_timer_str));
 	else
 	{
 		if (timer_idx >= lengthof(tcptimer_names_map))
