@@ -682,12 +682,28 @@ recv_diag_msgs(int nl_sock, HTAB *nldiag_map, uid_t my_uid)
 			if (nlh->nlmsg_type == NLMSG_ERROR)
 			{
 				struct nlmsgerr *err = (struct nlmsgerr *) NLMSG_DATA(nlh);
-				int			nl_errno = -err->error;
+				int			nl_errno;
+
+				/* Sanity check before dereferencing nlmsgerr struct */
+				if (nlh->nlmsg_len < NLMSG_LENGTH(sizeof(*err)))
+					nl_errno = EPROTO;
+				else
+					nl_errno = -err->error;
 
 				close(nl_sock);
 				ereport(ERROR,
 						(errcode(ERRCODE_IO_ERROR),
 						 errmsg("error in netlink message: %s", strerror(nl_errno))));
+			}
+
+			/*
+			 * Sanity check before dereferencing inet_diag_msg: ignore too short
+			 * msgs
+			 */
+			if (nlh->nlmsg_len < NLMSG_LENGTH(sizeof(*diag_msg)))
+			{
+				nlh = NLMSG_NEXT(nlh, numbytes);
+				continue;
 			}
 
 			diag_msg = (struct inet_diag_msg *) NLMSG_DATA(nlh);
