@@ -66,7 +66,7 @@
 #ifdef PG_MODULE_MAGIC_EXT
 PG_MODULE_MAGIC_EXT(
 					.name = "pg_stat_tcpinfo",
-					.version = "1.0"
+					.version = "1.1"
 );
 #else
 PG_MODULE_MAGIC;
