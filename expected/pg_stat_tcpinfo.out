@@ -1,0 +1,9 @@
+CREATE EXTENSION pg_stat_tcpinfo;
+-- The server must be listening on 127.0.0.1, so set listen_address
+SELECT src_addr, dst_addr FROM pg_stat_tcpinfo WHERE src_addr = '127.0.0.1' AND state = 'LISTEN' LIMIT 1;
+ src_addr  | dst_addr 
+-----------+----------
+ 127.0.0.1 | 0.0.0.0
+(1 row)
+
+DROP EXTENSION pg_stat_tcpinfo;

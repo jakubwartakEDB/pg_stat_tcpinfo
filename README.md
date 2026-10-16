@@ -23,18 +23,6 @@ TIME-WAIT sockets are not shown because the kernel keeps no owner for them.
 
 * Linux (uses `/proc` and netlink `sock_diag`), at least 4.18.x to compile/run.
 
-## Install
-
-```sh
-export PATH=/path/to/specific/PG/path/VERSION:$PATH
-make
-sudo make install
-```
-
-```sql
-CREATE EXTENSION pg_stat_tcpinfo;
-```
-
 ## Usage
 
 ```sql
@@ -71,6 +59,28 @@ JOIN pg_stat_tcpinfo t ON t.pid = a.pid;
 
 Keys inside `tcpinfo` follow the `tcpi_*` field names without the prefix
 (for example `rtt`, `retrans` and so on). 
+
+## Installation
+
+```sh
+export PATH=/path/to/specific/PG/path/VERSION:$PATH
+make
+sudo make install
+```
+
+```sql
+CREATE EXTENSION pg_stat_tcpinfo;
+```
+
+## Testing
+
+If you have local server running, you can run very simple smoketest:
+
+```sh
+sudo make install # ensure it's installed
+export PGPORT=5433
+make installcheck
+```
 
 ## Security
 

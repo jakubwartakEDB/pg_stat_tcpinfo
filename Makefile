@@ -2,6 +2,7 @@ MODULES = pg_stat_tcpinfo
 
 EXTENSION = pg_stat_tcpinfo
 DATA = pg_stat_tcpinfo--1.0.sql
+REGRESS = pg_stat_tcpinfo
 PGFILEDESC = "pg_stat_tcpinfo - detailed TCP connection information on Linux"
 
 # Use pg_config to find the PGXS makefile
