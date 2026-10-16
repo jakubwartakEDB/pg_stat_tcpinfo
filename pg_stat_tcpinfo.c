@@ -36,6 +36,7 @@
 #include "funcapi.h"
 #include "utils/builtins.h"
 #include "utils/hsearch.h"
+#include "utils/json.h"
 #include "utils/tuplestore.h"
 #include "storage/fd.h"
 #include "lib/stringinfo.h"
@@ -1156,8 +1157,10 @@ pg_stat_get_tcpinfo(PG_FUNCTION_ARGS)
 		}
 		else
 		{
-			values[i++] = Int32GetDatum(recvq);
-			values[i++] = Int32GetDatum(sendq);
+
+			/* Prevent wraparound */
+			values[i++] = Int32GetDatum((int32) Min(recvq, (__u32) PG_INT32_MAX));
+			values[i++] = Int32GetDatum((int32) Min(sendq, (__u32) PG_INT32_MAX));
 		}
 
 		if (!has_data)
